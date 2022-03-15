@@ -3,9 +3,7 @@ import java.util.ArrayList;
 //Darius Saadat
 public class Board {
     private Piece[][] board;
-    boolean P1turn = true;
-    boolean P2turn = false;
-
+    private int currentPlayer = 1;
     public Board(){
         board = new Piece[8][8];
         boolean player = true;
@@ -29,7 +27,11 @@ public class Board {
         }
     }
 
-    public void displayBoard(){
+    public int getCurrentPlayer(){
+        return currentPlayer;
+    }
+
+    public int displayBoard(){
         int movables = 1;
         System.out.println("---------------------------------");
         for (int row = 0; row < 8; row++) {
@@ -42,7 +44,7 @@ public class Board {
                 else if(!isTurn(current)){
                     System.out.print(" O |");
                 }
-                else if(numOfMoves(current, row, collumn).size() > 0){
+                else if(Moves(current, row, collumn).size() > 0){
                     if (movables<10){
                         System.out.print(" " + movables + " |");
                     }
@@ -59,28 +61,45 @@ public class Board {
             System.out.println();
             System.out.println("---------------------------------");
         }
+        return movables -1;
     }
 
-    public ArrayList<int[]> numOfMoves(Piece piece, int row, int collumn){
+    public ArrayList<int[]> Moves(Piece piece, int row, int collumn){
         ArrayList<int[]> moves = new ArrayList<>();
         int direction = 1;
         if (!piece.isP2() || piece.isKing()){
             if (row - 1 > 0 && collumn - 1 > 0 && board[row-1][collumn-1] == null){
-                int[] move = {row-1,collumn-1};
+                int[] move = {row-1,collumn-1,0};
                 moves.add(move);
             }
             if (row - 1 > 0 && collumn + 1 < 7 && board[row-1][collumn+1] == null){
-                int[] move = {row-1,collumn+1};
+                int[] move = {row-1,collumn+1,0};
+                moves.add(move);
+            }
+            if (row - 2 > 0 && collumn - 2 > 0 && ((board[row-1][collumn-1] != null && (!isTurn(board[row-1][collumn-1]))) && board[row-2][collumn-2] == null)){
+                int[] move = {row-1,collumn-1,1};
+                moves.add(move);
+            }
+            if (row - 2 > 0 && collumn + 2 < 7 && ((board[row-1][collumn+1] != null && (!isTurn(board[row-1][collumn+1]))) && board[row-2][collumn+2] == null)){
+                int[] move = {row-1,collumn+1,1};
                 moves.add(move);
             }
         }
         if (piece.isP2() || piece.isKing()){
             if (row + 1 < 7 && collumn - 1 > 0 && board[row+1][collumn-1] == null){
-                int[] move = {row+1,collumn-1};
+                int[] move = {row+1,collumn-1,0};
                 moves.add(move);
             }
             if (row + 1 < 7 && collumn + 1 < 7 && board[row+1][collumn+1] == null){
-                int[] move = {row+1,collumn+1};
+                int[] move = {row+1,collumn+1,0};
+                moves.add(move);
+            }
+            if (row + 2 < 7 && collumn - 2 > 0 && ((board[row+1][collumn-1] != null && (!isTurn(board[row+1][collumn-1]))) && board[row+2][collumn-2] == null)){
+                int[] move = {row+1,collumn-1,1};
+                moves.add(move);
+            }
+            if (row + 2 < 7 && collumn + 2 < 7 && ((board[row+1][collumn+1] != null && (!isTurn(board[row+1][collumn+1])))  && board[row+2][collumn+2] == null)){
+                int[] move = {row+1,collumn+1,1};
                 moves.add(move);
             }
         }
@@ -88,12 +107,16 @@ public class Board {
     }
 
     public boolean isTurn(Piece check){
-        return (check.isP2() == P2turn);
+        return (check.isP2() == (currentPlayer == 2));
     }
 
     public void endTurn(){
-        P1turn = !P1turn;
-        P2turn = !P2turn;
+        if (currentPlayer == 1){
+            currentPlayer = 2;
+        }
+        else{
+            currentPlayer = 1;
+        }
     }
 
     public boolean hasWon(){
