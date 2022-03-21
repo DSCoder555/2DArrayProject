@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Board {
     private Piece[][] board;
     private int currentPlayer = 1;
+
     public Board(){
         board = new Piece[8][8];
         boolean player = true;
@@ -11,7 +12,7 @@ public class Board {
         for (int row = 0; row < 8; row++) {
             for (int collumn = 0; collumn < 8; collumn++) {
                 if (hasPiece){
-                    board[row][collumn] = new Piece(player);
+                    board[row][collumn] = new Piece(player, row, collumn);
                     hasPiece = false;
                 }
                 else {
@@ -31,7 +32,40 @@ public class Board {
         return currentPlayer;
     }
 
-    public int displayBoard(){
+    public ArrayList<ArrayList<int[]>> displayBoard(){
+        ArrayList<ArrayList<int[]>> movables = new ArrayList<>();
+        System.out.println("---------------------------------");
+        for (int row = 0; row < 8; row++) {
+            System.out.print(row + 1 + "|");
+            for (int collumn = 0; collumn < 8; collumn++) {
+                Piece current = board[row][collumn];
+                if (current == null){
+                    System.out.print("   |");
+                }
+                else if(!isTurn(current)){
+                    System.out.print(" O |");
+                }
+                else if(Moves(current).size() > 1){
+                    if (movables.size() <10){
+                        System.out.print(" " + (movables.size() + 1) + " |");
+                    }
+                    else{
+                        System.out.print((movables.size() + 1) + " |");
+                    }
+
+                    movables.add(Moves(current));
+                }
+                else{
+                    System.out.print(" X |");
+                }
+            }
+            System.out.println();
+            System.out.println("---------------------------------");
+        }
+        return movables;
+    }
+
+    public void displayMoves(ArrayList moves){
         int movables = 1;
         System.out.println("---------------------------------");
         for (int row = 0; row < 8; row++) {
@@ -44,15 +78,15 @@ public class Board {
                 else if(!isTurn(current)){
                     System.out.print(" O |");
                 }
-                else if(Moves(current, row, collumn).size() > 0){
-                    if (movables<10){
-                        System.out.print(" " + movables + " |");
+                else if(moves.indexOf(current) > 0){
+                    if (moves.indexOf(current)  == 0){
+                        System.out.print(" O |");
                     }
                     else{
-                        System.out.print(movables + " |");
-                    }
 
-                    movables++;
+                        System.out.print(" " + movables + " |");
+                        movables++;
+                    }
                 }
                 else{
                     System.out.print(" X |");
@@ -61,12 +95,14 @@ public class Board {
             System.out.println();
             System.out.println("---------------------------------");
         }
-        return movables -1;
     }
 
-    public ArrayList<int[]> Moves(Piece piece, int row, int collumn){
+    public ArrayList<int[]> Moves(Piece piece){
         ArrayList<int[]> moves = new ArrayList<>();
         int direction = 1;
+        int row = piece.getRow();
+        int collumn = piece.getCollumn();
+        moves.add(new int[]{row,collumn});
         if (!piece.isP2() || piece.isKing()){
             if (row - 1 > 0 && collumn - 1 > 0 && board[row-1][collumn-1] == null){
                 int[] move = {row-1,collumn-1,0};
@@ -104,6 +140,10 @@ public class Board {
             }
         }
         return moves;
+    }
+
+    public void move(){
+        
     }
 
     public boolean isTurn(Piece check){
