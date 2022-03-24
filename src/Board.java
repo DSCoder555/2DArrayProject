@@ -65,10 +65,10 @@ public class Board {
         return movables;
     }
 
-    public void displayMoves(ArrayList moves){
+    public void displayMoves(ArrayList<int[]> moves){
         int[][] canMoves = new int[moves.size()][2];
         for (int i = 0; i < moves.size(); i++){
-            canMoves[i] = new {moves.get(i+1), moves.get(i+1)};
+            canMoves[i] = new int[]{moves.get(i + 1)[0], moves.get(i + 1)[1]};
         }
         int movables = 1;
         System.out.println("---------------------------------");
@@ -76,13 +76,14 @@ public class Board {
             System.out.print(row + 1 + "|");
             for (int collumn = 0; collumn < 8; collumn++) {
                 Piece current = board[row][collumn];
+                int[] position = new int[]{row, collumn};
                 if (current == null){
                     System.out.print("   |");
                 }
                 else if(!isTurn(current)){
                     System.out.print(" O |");
                 }
-                else if(canMoves.indexOf(current) >= 0){
+                else if(canMoves.indexOf(position) >= 0){
                     if (moves.indexOf(current)  == 0){
                         System.out.print(" O |");
                     }

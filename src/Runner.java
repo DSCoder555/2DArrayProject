@@ -9,7 +9,7 @@ public class Runner {
         while (!gameboard.hasWon()){
             ArrayList movables = gameboard.displayBoard();
             if (movables.size() > 0){
-                while (response < 0 || response > movables.size()){
+                while (response < 0 ||  response > movables.size()){
                     System.out.print("Player " + gameboard.getCurrentPlayer() + ", which piece do you want to move? : ");
                     response = scan.nextInt();
                     System.out.println(movables.size());
