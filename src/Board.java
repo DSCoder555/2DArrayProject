@@ -147,8 +147,15 @@ public class Board {
         return moves;
     }
 
-    public void move(){
-        
+    public void move(Move currentMove){
+        board[currentMove.getEndRow()][currentMove.getEndCol()] = board[currentMove.getStartRow()][currentMove.getStartCol()];
+        board[currentMove.getStartRow()][currentMove.getStartCol()] = null;
+        if(currentMove.canKill()){
+            board[currentMove.killRow()][currentMove.killCol()] = null;
+        }
+        if (currentMove.canKing()){
+            board[currentMove.getEndRow()][currentMove.getEndCol()].setKing();
+        }
     }
 
     public boolean isTurn(Piece check){

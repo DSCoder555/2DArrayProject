@@ -28,9 +28,8 @@ public class Piece {
         return y;
     }
 
-    public void die(){
-        x = -1;
-        y = -1;
+    public void setKing(){
+        isKing = true;
     }
 
 
