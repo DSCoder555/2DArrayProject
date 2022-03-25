@@ -7,7 +7,7 @@ public class Runner {
         int response = -1;
         System.out.println("Welcome to 2D Checkers.  Players will take turns moving pieces.  The current player's pieces are represented by numbers or 'X's depending on if they can move.  The player who eliminates all of the opponents pieces wins!");
         while (!gameboard.hasWon()){
-            ArrayList movables = gameboard.displayBoard();
+            ArrayList<ArrayList<Move>> movables = gameboard.displayBoard();
             if (movables.size() > 0){
                 while (response < 0 ||  response > movables.size()){
                     System.out.print("Player " + gameboard.getCurrentPlayer() + ", which piece do you want to move? : ");
