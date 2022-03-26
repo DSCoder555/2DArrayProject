@@ -3,13 +3,15 @@ public class Move {
     private int startCol;
     private int endRow;
     private int endCol;
+    private int type;
     private boolean kill = false;
     private boolean king = false;
-    public Move(int startRow, int startCol, int endRow, int endCol){
+    public Move(int startRow, int startCol, int endRow, int endCol, int type){
         this.startRow = startRow;
         this.startCol = startCol;
         this.endRow = endRow;
         this.endCol = endCol;
+        this.type = type;
         if(endRow - startRow == 2 || endRow - startRow == -2){
             kill = true;
         }
@@ -48,6 +50,10 @@ public class Move {
 
     public int killCol(){
         return (startCol + endCol)/2;
+    }
+
+    public int getType(){
+        return type;
     }
 
 

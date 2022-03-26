@@ -30,6 +30,8 @@ public class Runner {
             }
             gameboard.endTurn();
         }
+        gameboard.endTurn();
+        System.out.println("Player " + gameboard.getCurrentPlayer() + " won!");
         
     }
 }

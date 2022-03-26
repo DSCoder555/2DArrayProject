@@ -69,6 +69,7 @@ public class Board {
         Move[] canMoves = new Move[moves.size()];
         for (int i = 0; i < moves.size(); i++){
             canMoves[i] = moves.get(i);
+            System.out.println(moves.get(i).getEndRow() + " " + moves.get(i).getEndCol());
         }
         int movables = 1;
         System.out.println("---------------------------------");
@@ -109,38 +110,38 @@ public class Board {
         int row = piece.getRow();
         int collumn = piece.getCollumn();
         if (!piece.isP2() || piece.isKing()){
-            if (row - 1 > 0 && collumn - 1 > 0 && board[row-1][collumn-1] == null){
-                Move move = new Move(row, collumn, row - 1, collumn - 1);
+            if (row - 2 >= 0 && collumn - 2 >= 0 && ((board[row-1][collumn-1] != null && (!isTurn(board[row-1][collumn-1]))) && board[row-2][collumn-2] == null)){
+                Move move = new Move(row, collumn, row - 2, collumn - 2, 3);
                 moves.add(move);
             }
-            if (row - 1 > 0 && collumn + 1 < 7 && board[row-1][collumn+1] == null){
-                Move move = new Move(row, collumn, row - 1, collumn + 1);
+            if (row - 2 >= 0 && collumn + 2 <= 7 && ((board[row-1][collumn+1] != null && (!isTurn(board[row-1][collumn+1]))) && board[row-2][collumn+2] == null)){
+                Move move = new Move(row, collumn, row - 2, collumn + 2, 4);
                 moves.add(move);
             }
-            if (row - 2 > 0 && collumn - 2 > 0 && ((board[row-1][collumn-1] != null && (!isTurn(board[row-1][collumn-1]))) && board[row-2][collumn-2] == null)){
-                Move move = new Move(row, collumn, row - 2, collumn - 2);
+            if (row - 1 >= 0 && collumn - 1 >= 0 && board[row-1][collumn-1] == null){
+                Move move = new Move(row, collumn, row - 1, collumn - 1, 1);
                 moves.add(move);
             }
-            if (row - 2 > 0 && collumn + 2 < 7 && ((board[row-1][collumn+1] != null && (!isTurn(board[row-1][collumn+1]))) && board[row-2][collumn+2] == null)){
-                Move move = new Move(row, collumn, row - 2, collumn + 2);
+            if (row - 1 >= 0 && collumn + 1 <= 7 && board[row-1][collumn+1] == null){
+                Move move = new Move(row, collumn, row - 1, collumn + 1, 2);
                 moves.add(move);
             }
         }
         if (piece.isP2() || piece.isKing()){
-            if (row + 1 < 7 && collumn - 1 > 0 && board[row+1][collumn-1] == null){
-                Move move = new Move(row, collumn, row + 1, collumn - 1);
+            if (row + 1 <= 7 && collumn - 1 >= 0 && board[row+1][collumn-1] == null){
+                Move move = new Move(row, collumn, row + 1, collumn - 1, 5);
                 moves.add(move);
             }
-            if (row + 1 < 7 && collumn + 1 < 7 && board[row+1][collumn+1] == null){
-                Move move = new Move(row, collumn, row + 1, collumn + 1);
+            if (row + 1 <= 7 && collumn + 1 <= 7 && board[row+1][collumn+1] == null){
+                Move move = new Move(row, collumn, row + 1, collumn + 1, 6);
                 moves.add(move);
             }
-            if (row + 2 < 7 && collumn - 2 > 0 && ((board[row+1][collumn-1] != null && (!isTurn(board[row+1][collumn-1]))) && board[row+2][collumn-2] == null)){
-                Move move = new Move(row, collumn, row + 2, collumn + 2);
+            if (row + 2 <= 7 && collumn - 2 >= 0 && ((board[row+1][collumn-1] != null && (!isTurn(board[row+1][collumn-1]))) && board[row+2][collumn-2] == null)){
+                Move move = new Move(row, collumn, row + 2, collumn - 2, 7);
                 moves.add(move);
             }
-            if (row + 2 < 7 && collumn + 2 < 7 && ((board[row+1][collumn+1] != null && (!isTurn(board[row+1][collumn+1])))  && board[row+2][collumn+2] == null)){
-                Move move = new Move(row, collumn, row + 2, collumn + 2);
+            if (row + 2 <= 7 && collumn + 2 <= 7 && ((board[row+1][collumn+1] != null && (!isTurn(board[row+1][collumn+1])))  && board[row+2][collumn+2] == null)){
+                Move move = new Move(row, collumn, row + 2, collumn + 2, 8);
                 moves.add(move);
             }
         }
@@ -150,12 +151,15 @@ public class Board {
     public void move(Move currentMove){
         board[currentMove.getEndRow()][currentMove.getEndCol()] = board[currentMove.getStartRow()][currentMove.getStartCol()];
         board[currentMove.getStartRow()][currentMove.getStartCol()] = null;
+        board[currentMove.getEndRow()][currentMove.getEndCol()].setX(currentMove.getEndRow());
+        board[currentMove.getEndRow()][currentMove.getEndCol()].setY(currentMove.getEndCol());
         if(currentMove.canKill()){
             board[currentMove.killRow()][currentMove.killCol()] = null;
         }
         if (currentMove.canKing()){
             board[currentMove.getEndRow()][currentMove.getEndCol()].setKing();
         }
+        System.out.println(currentMove.getType());
     }
 
     public boolean isTurn(Piece check){
