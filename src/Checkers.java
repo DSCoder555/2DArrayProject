@@ -16,18 +16,20 @@ public class Checkers {
      */
     public Checkers(){
         gameBoard = new Board();
-        int pieceResponse = -1;
-        int moveResponse = -1;
+        pieceResponse = -1;
+        moveResponse = -1;
     }
 
     /**play; plays a Checkers game, finishes when game ends
      *
      */
     public void play(){
-        System.out.println("Welcome to 2D Checkers.  Players will take turns moving pieces.  " +
-                "\nThe current player's movable pieces are represented by numbers and after they select a piece, their possible moves will be represented by numbers.  \nThere is no multiples jumps in one turn." +
-                "\nPlayer 1's pieces will be represented with 'O's while Player 2's pieces are represented by 'X's." +
-                "\nThe player who eliminates all of the opponents pieces wins!");
+        System.out.println("""
+                Welcome to 2D Checkers.  Players will take turns moving pieces. \s
+                The current player's movable pieces are represented by numbers and after they select a piece, their possible moves will be represented by numbers. \s
+                There is no multiples jumps in one turn.
+                The rest of Player 1's pieces will be represented with 'O's while Player 2's pieces are represented by 'X's.
+                The player who eliminates all of the opponents pieces wins!""");
         //noMoves: used to see if both players have no moves
         boolean noMoves = false;
         //while loop, allowing player to keep making moves until the game ends
